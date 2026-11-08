@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('ip_checks', function (Blueprint $table) {
             $table->id();
             $table->string('ip');
-            $table->string('country');
-            $table->string('organization');
-            $table->string('netname');
-            $table->string('ip_range');
+            $table->string('country')->nullable();
+            $table->string('organization')->nullable();
+            $table->string('netname')->nullable();
+            $table->string('ip_range')->nullable();
         });
     }
 

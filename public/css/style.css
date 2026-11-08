@@ -61,21 +61,6 @@ ul {
 
 .form-container button:hover { background: #58626d; }
 .form-container button:disabled { background: #93c5fd; cursor: not-allowed; }
- 
-.error-message {
-    background: #fef2f2;
-    padding: 12px 16px;
-    border-radius: 6px;
-    border: 1px solid #fecaca;
-}
-
-.error-container {
-    background: #fef2f2;
-    padding: 12px;
-    border-radius: 6px;
-    margin-bottom: 20px;
-    padding-left: 100px;
-}
 
 .main-container {
     font-family: 'Arial', sans-serif;

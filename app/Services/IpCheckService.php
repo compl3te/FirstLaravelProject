@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\IpCheck;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class IpCheckService
 {
@@ -14,9 +15,34 @@ class IpCheckService
             return $ipCheck;
         }  
         
-        $ipwho = Http::timeout(10)->get("https://ipwho.is/{$ip}")->json();
-        $rdap  = Http::timeout(10)->get("https://rdap.org/ip/{$ip}")->json();
+        $country = null;
+        $org = null;
+        $nameReg = null;
+        $ipRange = null;
         
+        try {
+            $ipwho = Http::timeout(10)->get("https://ipwho.is/{$ip}")->json();
+            $country = $ipwho['country'] ?? null;
+            $org = $ipwho['connection']['org'] ?? $ipwho['isp'] ?? null;
+        } catch (\Exception $e) {
+            Log::warning("Ошибка при запросе к ipwho.is для IP {$ip}: " . $e->getMessage());
+        }
+
+        try {
+            $rdap  = Http::timeout(10)->get("https://rdap.org/ip/{$ip}")->json();
+            $nameReg = $rdap['name'] ?? null;
+
+            $start = $rdap['startAdress'] ?? null;
+            $end = $rdap['endAdress'] ?? null;
+            $ipRange = ($start && $end) ? "{start} - {end}" : null; 
+        } catch (\Exception $e) {
+            Log::warning("Ошибка при запросе к rdap.org для IP {$ip}: " . $e->getMessage());
+        }
+
+        if (!$country && !$org && !$nameReg && !$ipRange) {
+            return null;
+        }
+
         $country = $ipwho['country'] ?? null;
         $org = $ipwho['connection']['org'] ?? $ipwho['isp'] ?? null;
         $nameReg = $rdap['name'] ?? null;

@@ -18,4 +18,22 @@ class BasicController extends Controller
         $result = $service->checkIp($request->input('ip'));
         return view('static.ipCheck', compact('result'));
     }
+
+    public function ipCheckRes($ip, IpCheckService $service, Request $request)
+    {
+        $request->merge(['ip' => $ip]);
+        $request->validate([
+            'ip' => 'required|ip'
+        ], [
+            'ip.ip' => 'Введен некорректный IP-адрес. Введите, например, 8.8.8.8'
+        ]);
+
+        $ipInfo = $service->checkIp($ip);
+        
+        if (!$ipInfo) {
+            return response()->json(['error' => 'Информация об IP-адресе не найдена']);
+        }
+
+        return response()->json($ipInfo);
+    }
 }
