@@ -15,7 +15,7 @@ class IpCheckRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'ip' => 'required|ip',
+            'ip' => 'required|ip|not_regex:/^(http)/i'
         ];
     }
 
@@ -23,7 +23,8 @@ class IpCheckRequest extends FormRequest
     {
         return [
             'ip.required' => 'Поле IP-адрес обязательно для заполнения.',
-            'ip.ip' => 'Введите корректный IP-адрес. Например: 192.168.1.1',
+            'ip.ip' => 'Введите корректный IP-адрес. Например: 8.8.8.8',
+            'ip.not_regex' => 'Введите только IP-адрес в формате 8.8.8.8'
         ];
     }
 }

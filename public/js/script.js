@@ -18,6 +18,10 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        if (ipValue.toLowerCase().startsWith('http')) {
+            container.innerHTML = '<p style="color: red;">Введите только IP-адрес в формате 8.8.8.8</p>';
+            return;
+        }
         container.innerHTML = '<p>Загрузка данных...</p>';
 
         try {

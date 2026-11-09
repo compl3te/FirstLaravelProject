@@ -23,9 +23,10 @@ class BasicController extends Controller
     {
         $request->merge(['ip' => $ip]);
         $request->validate([
-            'ip' => 'required|ip'
+            'ip' => 'required|ip|not_regex:/^(http)/i'
         ], [
-            'ip.ip' => 'Введен некорректный IP-адрес. Введите, например, 8.8.8.8'
+            'ip.ip' => 'Введен некорректный IP-адрес. Введите, например, 8.8.8.8',
+            'ip.not_regex' => 'Введите только IP-адрес в формате 8.8.8.8'
         ]);
 
         $ipInfo = $service->checkIp($ip);
